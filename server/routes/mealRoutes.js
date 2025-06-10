@@ -16,7 +16,7 @@ router.get('/', mealController.getAllMeals);
 // ✅ POST - Ajouter un repas
 router.post('/', upload.fields([{ name: 'image' }, { name: 'video' }]), async (req, res) => {
  console.log('champs recus:', req.body);
- onsole.log('fichier recu:', req.files);
+ console.log('fichier recu:', req.files);
   try {
     const { name, price, category } = req.body;
 
