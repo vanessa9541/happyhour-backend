@@ -37,7 +37,7 @@ function Sidebar() {
       padding: 20,
       boxShadow: '2px 0 5px rgba(0,0,0,0.1)'
     }}>
-      <h2 style={{ marginBottom: 30 }}>Admin HBOR</h2>
+      <h2 style={{ marginBottom: 30 }}>Tableau de bord HappyHour</h2>
       <ul style={{ listStyle: 'none', padding: 0 }}>
         <li style={{ marginBottom: 15 }}>
           <NavLink to="/" end style={linkStyle}>
