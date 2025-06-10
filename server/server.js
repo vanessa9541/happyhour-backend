@@ -44,7 +44,7 @@ app.use((req, res, next) => {
 });
 
 // Connexion à MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/restaurant-app', {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
@@ -58,6 +58,10 @@ setInterval(deleteOldOrders, 60 * 60 * 1000); // toutes les heures
 app.use('/api/meals', mealRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/promotions', promotionRoutes);
+
+app.get('/',(req,res) => {
+res.send('Bienvenue sur la base de données HAPPYHOUR');
+});
 
 // Socket.IO : écoute de connexion
 io.on('connection', (socket) => {
