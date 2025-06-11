@@ -70,7 +70,7 @@ const MenuScreen = () => {
     <View style={{ flex: 1 }}>
       {/* Entête jaune */}
       <SafeAreaView style={styles.header}>
-        <Text style={styles.headerTitle}>Mon Restaurant</Text>
+        <Text style={styles.headerTitle}>HAPPY HOUR</Text>
 
         <View style={styles.cartContainer}>
           <MaterialIcons name="shopping-cart" size={28} color="black" />
@@ -83,7 +83,7 @@ const MenuScreen = () => {
             style={styles.cartButton}
             onPress={() => navigation.navigate('Commande', { selectedMeals })}
           >
-            <Text style={styles.cartButtonText}>Ma commande</Text>
+            <Text style={styles.cartButtonText}>Votre commande</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -101,7 +101,7 @@ const MenuScreen = () => {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{ paddingLeft: 15, paddingRight: 5 }}
               renderItem={({ item: meal }) => (
-                <View style={[styles.mealCard, { width: 220, marginRight: 15 }]}>
+                <View style={[styles.mealCard, { width: 220, marginRight: 5 }]}>
                   <Text style={styles.mealName}>{meal.name}</Text>
                   <Text style={styles.price}>{meal.price} FCFA</Text>
 
@@ -119,6 +119,10 @@ const MenuScreen = () => {
                       source={{ uri: meal.videoUrl }}
                       style={styles.video}
                       useNativeControls
+                      volume={0.0}
+                      shouldPlay
+                      isLooping
+                      isMuted={true}
                       resizeMode="cover"
                       onError={e => console.log("Erreur vidéo:", e)}
                     />
@@ -209,21 +213,21 @@ const styles = StyleSheet.create({
   mealName: { fontSize: 18, fontWeight: '600' },
   price: { fontSize: 16, color: '#666', marginBottom: 5 },
   image: {
-    width: 150,
-    height: 150,
+    width: 200,
+    height: 200,
     marginTop: 10,
-    borderRadius: 10,
+    borderRadius: 5,
   },
   video: {
-    width: 150,
-    height: 150,
-    marginTop: 10,
-    borderRadius: 10,
+    width: 180,
+    height: 180,
+    marginTop: 5,
+    borderRadius: 5,
   },
   button: {
     backgroundColor: '#333',
-    padding: 10,
-    marginTop: 10,
+    padding: 5,
+    marginTop: 5,
     borderRadius: 10,
     alignItems: 'center'
   },

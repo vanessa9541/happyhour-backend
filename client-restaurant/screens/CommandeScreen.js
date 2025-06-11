@@ -27,6 +27,7 @@ const CommandeScreen = ({ route, navigation }) => {
       const updatedMeals = [...meals];
       updatedMeals.splice(index, 1);
       setMeals(updatedMeals);
+      setSelectedMeals(updatedMeals);
     }
   };
 
