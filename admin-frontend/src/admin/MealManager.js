@@ -17,7 +17,7 @@ function MealManager() {
 
   const fetchMeals = async () => {
     try {
-      const response = await axios.get('http://localhost:7000/api/meals');
+      const response = await axios.get('https://happyhour-backend.onrender.com/api/meals');
       setMeals(response.data);
     } catch (error) {
       console.error('❌ Erreur lors du chargement des repas', error);
@@ -42,7 +42,7 @@ function MealManager() {
       if (newMeal.image) formData.append('image', newMeal.image);
       if (newMeal.video) formData.append('video', newMeal.video);
 
-      const response = await axios.post('http://localhost:7000/api/meals', formData);
+      const response = await axios.post('https://happyhour-backend.onrender.com/api/meals', formData);
       console.log('✅ Repas ajouté avec succès :', response.data);
 
       fetchMeals();
@@ -57,7 +57,7 @@ function MealManager() {
 
   const handleDelete = async (mealId) => {
     try {
-      const response = await axios.delete(`http://localhost:7000/api/meals/${mealId}`);
+      const response = await axios.delete(`https://happyhour-backend.onrender.com/api/meals/${mealId}`);
       if (response.status === 200) {
         alert('Repas supprimé avec succès');
         setMeals(prevMeals => prevMeals.filter(meal => meal._id !== mealId));

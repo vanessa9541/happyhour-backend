@@ -9,7 +9,7 @@ const Notification = () => {
   useEffect(() => {
     const fetchCommandes = async () => {
       try {
-        const response = await axios.get('http://localhost:7000/api/orders');
+        const response = await axios.get('https://happyhour-backend.onrender.com/api/orders');
         const now = new Date();
 
         const commandesRécentes = response.data.filter(order => {

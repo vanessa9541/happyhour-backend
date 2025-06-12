@@ -23,7 +23,7 @@ const OrderList = () => {
     if (!confirm) return;
 
     try {
-      await axios.delete(`http://localhost:7000/api/orders/${id}`);
+      await axios.delete(`https://happyhour-backend.onrender.com/api/orders/${id}`);
       setCommandes(prev => prev.filter(cmd => cmd._id !== id));
       alert("Commande supprimée avec succès.");
     } catch (error) {
