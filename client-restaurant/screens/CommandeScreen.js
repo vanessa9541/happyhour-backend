@@ -64,7 +64,7 @@ const CommandeScreen = ({ route, navigation }) => {
     };
 
     try {
-      await api.post('/api/orders', order);
+      await api.post('https://happyhour-backend.onrender.com/orders', order);
       alert("Commande envoyée avec succès !");
       navigation.navigate('Accueil');
     } catch (error) {
