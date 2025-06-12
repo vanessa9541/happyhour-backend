@@ -1,4 +1,4 @@
 import { io } from 'socket.io-client';
 
-const socket = io('http://172.20.10.6:7000'); // ← adapte le port si besoin
+const socket = io('https://happyhour-backend.onrender.com'); // ← adapte le port si besoin
 export default socket;

@@ -7,7 +7,7 @@ const OrderList = () => {
   useEffect(() => {
     const fetchCommandes = async () => {
       try {
-        const response = await axios.get('http://localhost:7000/api/orders');
+        const response = await axios.get('https://happyhour-backend.onrender.com/api/orders');
         const tri = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setCommandes(tri);
       } catch (error) {
