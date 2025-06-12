@@ -18,7 +18,7 @@ const MenuScreen = () => {
 
   useEffect(() => {
     // Récupérer la liste initiale des repas depuis le serveur
-    fetch('http://172.20.10.6:7000/api/meals') // adapte selon ta route API backend
+    fetch('https://happyhour-backend.onrender.com/api/meals') // adapte selon ta route API backend
       .then(res => res.json())
       .then(data => setMeals(data))
       .catch(err => console.error('Erreur fetch meals:', err));
