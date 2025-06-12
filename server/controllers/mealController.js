@@ -4,7 +4,7 @@ const getAllMeals = async (req, res) => {
   try {
     const meals = await Meal.find();
 
-    const host = req.headers.host || 'localhost:7000'; // dynamique selon requête
+    const host = req.headers.host || 'https://happyhour-backend.onrender.com'; // dynamique selon requête
     const protocol = req.protocol || 'http';
 
     // Construire les URLs complètes des fichiers
