@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import io from 'socket.io-client';
 import { MaterialIcons } from '@expo/vector-icons'; // Pour l'icône panier
 
-const socket = io('http://172.20.10.6:7000'); // adapte ton IP locale
+const socket = io('https://happyhour-backend.onrender.com'); // adapte ton IP locale
 
 const MenuScreen = () => {
   const navigation = useNavigation();
