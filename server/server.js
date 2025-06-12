@@ -27,7 +27,10 @@ app.set('io', io);
 
 // Middleware CORS
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: [
+    'https://admin-frontend-happyhour.vercel.app',
+    'https://happyhour-backend.onrender.com'
+  ],
   credentials: true
 }));
 
@@ -73,7 +76,7 @@ io.on('connection', (socket) => {
 });
 
 // Lancer le serveur
-const PORT = 7000;
+const PORT = process.env.PORT || 7000;
 server.listen(PORT, () => {
   console.log(`🚀 Serveur backend démarré sur le port ${PORT}`);
 });
