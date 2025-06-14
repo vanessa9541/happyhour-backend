@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, NavLink } from 'react-router-dom';
 
 import Notifications from './Notification.js';
@@ -8,6 +8,19 @@ import Promotions from './PromotionManager.js';
 
 export default function AdminHome() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    // Demande l'autorisation des notifications
+    if ("Notification" in window) {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          console.log("✅ Les notifications sont activées.");
+        } else {
+          console.log("❌ Les notifications sont refusées.");
+        }
+      });
+    }
+  }, []);
 
   return (
     <div style={{ display: 'flex', height:'100vh', fontFamily: "'Poppins', sans-serif" }}>
@@ -101,3 +114,4 @@ const styles = {
     zIndex: 999,
   },
 };
+
