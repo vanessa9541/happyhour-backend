@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route, NavLink } from 'react-router-dom';
 
 import Notifications from './Notification.js';
@@ -7,9 +7,22 @@ import Commandes from './OrdersList.js';
 import Promotions from './PromotionManager.js';
 
 export default function AdminHome() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <div style={{ display: 'flex', height: '100vh', fontFamily: "'Poppins', sans-serif" }}>
-      <Sidebar />
+    <div style={{ display: 'flex', height:'100vh', fontFamily: "'Poppins', sans-serif" }}>
+      {/* Bouton burger-menu visible sur mobile */}
+      <button
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        style={styles.burgerBtn}
+      >
+        ☰
+      </button>
+
+      {/* Menu */}
+      <Sidebar isMenuOpen={isMenuOpen} />
+
+      {/* Contenu principal */}
       <main style={{ flexGrow: 1, backgroundColor: '#ecf0f1', padding: 30, overflowY: 'auto' }}>
         <Routes>
           <Route path="/" element={<Notifications />} />
@@ -22,7 +35,7 @@ export default function AdminHome() {
   );
 }
 
-function Sidebar() {
+function Sidebar({ isMenuOpen }) {
   const linkStyle = ({ isActive }) => ({
     color: isActive ? '#1abc9c' : '#ecf0f1',
     fontWeight: isActive ? 'bold' : 'normal',
@@ -30,12 +43,9 @@ function Sidebar() {
   });
 
   return (
-    <nav style={{
-      width: 220,
-      backgroundColor: '#34495e',
-      color: 'white',
-      padding: 20,
-      boxShadow: '2px 0 5px rgba(0,0,0,0.1)'
+    <nav style={{ 
+      ...styles.sidebar, 
+      transform: isMenuOpen ? 'translateX(0)' : 'translateX(-100%)'
     }}>
       <h2 style={{ marginBottom: 30 }}>Tableau de bord HappyHour</h2>
       <ul style={{ listStyle: 'none', padding: 0 }}>
@@ -63,3 +73,31 @@ function Sidebar() {
     </nav>
   );
 }
+
+const styles = {
+  burgerBtn: {
+    position: 'fixed',
+    top: 20,
+    left: 20,
+    zIndex: 1000,
+    background: '#fff',
+    border: 'none',
+    fontSize: 30,
+    padding: 10,
+    cursor: 'pointer',
+    boxShadow: '0 4px 14px rgb(0 0 0 / 0.5)'
+  },
+  sidebar: {
+    width: 220,
+    backgroundColor: '#34495e',
+    color: 'white',
+    padding: 20,
+    boxShadow: '2px 0 5px rgb(0 0 0 / 0.1)', 
+    transition: 'transform 0.3s ease-in-out',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    height: '100vh',
+    zIndex: 999,
+  },
+};
