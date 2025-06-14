@@ -1,6 +1,11 @@
 {
   "short_name": "Happy hour",
   "name": "Tableau de bord administrateur",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+
   "icons": [
     {
       "src": "logohh.png",
@@ -18,8 +23,6 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "gcm_sender_id": "<VOTRE_ID>"
+
 }
