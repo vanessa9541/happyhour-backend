@@ -7,42 +7,42 @@ import api from '../api';
 const CommandeScreen = ({ route, navigation }) => {
   const { selectedMeals = [] } = route.params || {};
 
-  // On garde les repas dans le state
+  // On gère maintenant selectedMeals dans un state local pour suppression
   const [meals, setMeals] = useState(selectedMeals);
-  console.log('Repas reçus dans CommandeScreen :', selectedMeals);
-
-  // Autres champs
+  console.log('Menu recu dans commande:', selectedMeals);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [note, setNote] = useState('');
 
-  // Calcul du total
+  // Total recalculé à chaque modification de meals, en tenant compte de quantity si existante
   const total = meals.reduce((acc, item) => acc + ((item.price || 0) * (item.quantity || 1)), 0);
 
-  // Suppression d'un repas de la liste
+  // Fonction pour supprimer un repas par son id (ou son index si pas d'id)
   const removeMeal = (id, index) => {
     if (id) {
-      setMeals((prevMeals) => prevMeals.filter((item) => item._id !== id && item.id !== id));
+      setMeals(meals.filter((item) => item._id !== id && item.id !== id));
     } else {
-      setMeals((prevMeals) => prevMeals.filter((_, i) => i !== index)); 
+      // cas fallback sans id
+      const updatedMeals = [...meals];
+      updatedMeals.splice(index, 1);
+      setMeals(updatedMeals);
     }
   };
 
   // Validation simple avant envoi
   const validateForm = () => {
     if (!name.trim() || !phone.trim() || !address.trim()) {
-      Alert.alert('Erreur!', 'Merci de remplir le nom, téléphone et l\'adresse.');
+      alert('Merci de remplir le nom, téléphone et adresse.');
       return false;
     }
     if (meals.length === 0) {
-      Alert.alert('Erreur!', 'Veuillez sélectionner au moins un repas.');
+      alert('Veuillez sélectionner au moins un repas.');
       return false;
     }
     return true;
   };
 
-  // Envoyer la commande
   const handleSendOrder = async () => {
     if (!validateForm()) return;
 
@@ -57,18 +57,18 @@ const CommandeScreen = ({ route, navigation }) => {
         price: item.price,
         quantity: item.quantity || 1,
         image: (item.images && item.images[0]) || item.image || '',
-        video: item.video || '',
+        video: item.video || ''
       })),
       createdAt: new Date()
     };
 
     try {
-      await api.post('/api/orders', order);
-      Alert.alert("Commande envoyée avec succès!");
+      await api.post('https://happyhour-backend.onrender.com/api/orders', order);
+      alert("Commande envoyée avec succès !");
       navigation.navigate('Accueil'); // ou tu veux après
     } catch (error) {
       console.error("Erreur lors de l'envoi de la commande :", error.response ? error.response.data : error.message);
-      Alert.alert("Erreur!", "Erreur lors de l'envoi de la commande.");
+      alert("Erreur lors de l'envoi de la commande : " + (error.response?.data?.message || error.message || "Erreur inconnue"));
     }
   };
 
@@ -82,8 +82,7 @@ const CommandeScreen = ({ route, navigation }) => {
         data={meals}
         extraData={meals}
         keyExtractor={(item, index) =>
-          (item._id ? item._id : item.id ? item.id : index.toString()) + '-' + index
-        }
+          (item._id || item.id ? (item._id || item.id) + '-' + index : index.toString())}
         horizontal
         renderItem={({ item, index }) => (
           <View style={styles.mealItem}>
@@ -231,5 +230,5 @@ const styles = StyleSheet.create({
   buttonText: { color: '#fff', textAlign:'center' }
 });
 
-// export par defaut
+
 export default CommandeScreen;
