@@ -21,14 +21,16 @@ const CommandeScreen = ({ route, navigation }) => {
   // Fonction pour supprimer un repas par son id (ou index si pas d'id)
   const removeMeal = (id, index) => {
     if (id) {
-      setMeals(meals.filter(m => m._id !== id && m.id !== id));
+      updatedMeals = meals.filter(m => m._id !== id && m.id !== id);
     } else {
       // Si pas d'id, suppression par index
-      const updatedMeals = [...meals];
+      updatedMeals = [...meals];
       updatedMeals.splice(index, 1);
-      setMeals(updatedMeals);
-      setSelectedMeals(updatedMeals);
+      
+      //setSelectedMeals(updatedMeals);
     }
+    setMeals(updatedMeals);
+    navigation.setParams({selectedMeals: updatedMeals});
   };
 
   // Validation simple avant envoi
