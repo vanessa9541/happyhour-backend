@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Image
+  View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Image, Alert
 } from 'react-native';
 import api from '../api';
 
@@ -18,19 +18,16 @@ const CommandeScreen = ({ route, navigation }) => {
   // Total recalculé à chaque modification de meals, en tenant compte de quantity si existante
   const total = meals.reduce((acc, item) => acc + ((item.price || 0) * (item.quantity || 1)), 0);
 
-  // Fonction pour supprimer un repas par son id (ou index si pas d'id)
+  // Fonction pour supprimer un repas par son id (ou son index si pas d'id)
   const removeMeal = (id, index) => {
     if (id) {
-      updatedMeals = meals.filter(m => m._id !== id && m.id !== id);
+      setMeals(meals.filter((item) => item._id !== id && item.id !== id));
     } else {
-      // Si pas d'id, suppression par index
-      updatedMeals = [...meals];
+      // cas fallback sans id
+      const updatedMeals = [...meals];
       updatedMeals.splice(index, 1);
-      
-      //setSelectedMeals(updatedMeals);
+      setMeals(updatedMeals);
     }
-    setMeals(updatedMeals);
-    navigation.setParams({selectedMeals: updatedMeals});
   };
 
   // Validation simple avant envoi
@@ -55,7 +52,7 @@ const CommandeScreen = ({ route, navigation }) => {
       address,
       note,
       totalPrice: total,
-      meals: meals.map(item => ({
+      meals: meals.map((item) => ({
         name: item.name,
         price: item.price,
         quantity: item.quantity || 1,
@@ -68,21 +65,24 @@ const CommandeScreen = ({ route, navigation }) => {
     try {
       await api.post('https://happyhour-backend.onrender.com/api/orders', order);
       alert("Commande envoyée avec succès !");
-      navigation.navigate('Accueil');
+      navigation.navigate('Accueil'); // ou tu veux après
     } catch (error) {
-      console.error("Erreur lors de l'envoi de la commande :", error.response || error.message || error);
+      console.error("Erreur lors de l'envoi de la commande :", error.response ? error.response.data : error.message);
       alert("Erreur lors de l'envoi de la commande : " + (error.response?.data?.message || error.message || "Erreur inconnue"));
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Votre commande</Text>
+      <Text style={styles.title}>
+        Votre commande
+      </Text>
 
       <FlatList
         data={meals}
         extraData={meals}
-        keyExtractor={(item, index) => (item._id || item.id ? (item._id || item.id) + '-' + index : index.toString())}
+        keyExtractor={(item, index) =>
+          (item._id || item.id ? (item._id || item.id) + '-' + index : index.toString())}
         horizontal
         renderItem={({ item, index }) => (
           <View style={styles.mealItem}>
@@ -91,24 +91,31 @@ const CommandeScreen = ({ route, navigation }) => {
                 <Image source={{ uri: item.image }} style={styles.image} />
               ) : (
                 <View style={[styles.image, styles.placeholder]}>
-                  <Text style={{ fontSize: 10, color: '#aaa' }}>Pas d’image</Text>
+                    <Text style={{ fontSize: 10, color: '#aaa' }}>Pas d’image</Text>
                 </View>
               )}
+
               {/* Petite croix en haut à droite pour supprimer */}
               <TouchableOpacity
                 style={styles.deleteButton}
                 onPress={() => removeMeal(item._id || item.id, index)}
               >
-                <Text style={styles.deleteButtonText}>×</Text>
+                <Text style={styles.deleteButtonText}>
+                    ×
+                </Text>
               </TouchableOpacity>
             </View>
+
             <Text>{item.name}</Text>
             <Text>{item.price} FCFA</Text>
           </View>
         )}
+
       />
 
-      <Text style={styles.total}>Total: {total} FCFA</Text>
+      <Text style={styles.total}>
+        Total: {total} FCFA
+      </Text>
 
       <TextInput
         style={styles.input}
@@ -116,12 +123,14 @@ const CommandeScreen = ({ route, navigation }) => {
         value={note}
         onChangeText={setNote}
       />
+
       <TextInput
         style={styles.input}
         placeholder="Nom"
         value={name}
         onChangeText={setName}
       />
+
       <TextInput
         style={styles.input}
         placeholder="Téléphone"
@@ -129,6 +138,7 @@ const CommandeScreen = ({ route, navigation }) => {
         onChangeText={setPhone}
         keyboardType="phone-pad"
       />
+
       <TextInput
         style={styles.input}
         placeholder="Adresse de livraison"
@@ -139,27 +149,34 @@ const CommandeScreen = ({ route, navigation }) => {
       <View style={styles.buttonGroup}>
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => navigation.goBack()}
+          onPress={() =>navigation.goBack()}
         >
-          <Text style={styles.buttonText}>Modifier ma commande</Text>
+          <Text style={styles.buttonText}>
+            Modifier ma commande
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.orderButton, meals.length === 0 && { opacity: 0.5 }]}
+          style={[
+            styles.orderButton,
+            meals.length === 0 && {opacity: 0.5}
+          ]}
           onPress={handleSendOrder}
-          disabled={meals.length === 0} // Désactive si plus de repas
+          disabled={meals.length === 0}
         >
-          <Text style={styles.buttonText}>Commander</Text>
+          <Text style={styles.buttonText}>
+            Commander
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ 
   container: { padding: 20, backgroundColor: '#fff', flex: 1 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
-  mealItem: { marginRight: 10, alignItems: 'center' },
+  title: { fontSize: 24, fontWeight:'bold', marginBottom: 20 },
+  mealItem: { marginRight: 10, alignItems:'center' },
   image: { width: 80, height: 80, borderRadius: 10 },
   placeholder: {
     backgroundColor: '#eee',
@@ -208,10 +225,10 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     flex: 1,
-    opacity: 1
+   opacity: 1
   },
-  buttonText: { color: '#fff', textAlign: 'center' }
+  buttonText: { color: '#fff', textAlign:'center' }
 });
 
+// export par defaut
 export default CommandeScreen;
-
