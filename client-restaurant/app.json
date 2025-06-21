@@ -21,7 +21,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.happyhour.clienthappyhour"
+      "package": "com.vanessa.resto2025"
     },
     "web": {
       "favicon": "./assets/favicon.png"
